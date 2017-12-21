@@ -25,37 +25,37 @@ func Panic(callback func(http.ResponseWriter, *http.Request, interface{})) Optio
 	}
 }
 
-func Prepend(handlers ...nestingHandler) Option {
+func Prepend(handlers ...NestingHandler) Option {
 	return func(builder *routesBuilder) {
 		builder.handlers = append(handlers, builder.handlers...)
 	}
 }
 
-func HEAD(path string, handlers ...nestingHandler) Option {
+func HEAD(path string, handlers ...NestingHandler) Option {
 	return Register("HEAD", path, handlers...)
 }
 
-func OPTIONS(path string, handlers ...nestingHandler) Option {
+func OPTIONS(path string, handlers ...NestingHandler) Option {
 	return Register("OPTIONS", path, handlers...)
 }
 
-func GET(path string, handlers ...nestingHandler) Option {
+func GET(path string, handlers ...NestingHandler) Option {
 	return Register("GET", path, handlers...)
 }
 
-func PUT(path string, handlers ...nestingHandler) Option {
+func PUT(path string, handlers ...NestingHandler) Option {
 	return Register("PUT", path, handlers...)
 }
 
-func POST(path string, handlers ...nestingHandler) Option {
+func POST(path string, handlers ...NestingHandler) Option {
 	return Register("POST", path, handlers...)
 }
 
-func DELETE(path string, handlers ...nestingHandler) Option {
+func DELETE(path string, handlers ...NestingHandler) Option {
 	return Register("DELETE", path, handlers...)
 }
 
-func Register(methods, paths string, handlers ...nestingHandler) Option {
+func Register(methods, paths string, handlers ...NestingHandler) Option {
 	return func(builder *routesBuilder) {
 		handler := routeFunc(chainN(handlers))
 		for _, method := range strings.Split(methods, "|") {

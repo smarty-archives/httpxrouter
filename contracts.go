@@ -2,7 +2,7 @@ package httpxrouter
 
 import "net/http"
 
-type nestingHandler interface {
+type NestingHandler interface {
 	http.Handler
 	Install(inner http.Handler)
 }

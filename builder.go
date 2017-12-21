@@ -22,7 +22,7 @@ func New(options ...Option) http.Handler {
 }
 
 type routesBuilder struct {
-	handlers []nestingHandler
+	handlers []NestingHandler
 	router   *httprouter.Router
 }
 
@@ -36,7 +36,7 @@ func routeFunc(handler http.Handler) func(http.ResponseWriter, *http.Request, ht
 	}
 }
 
-func chainN(handlers []nestingHandler) nestingHandler {
+func chainN(handlers []NestingHandler) NestingHandler {
 	for x := 0; x < len(handlers)-1; x++ {
 		handlers[x].Install(handlers[x+1])
 	}

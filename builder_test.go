@@ -195,7 +195,7 @@ func (this *HandlerChainFixture) Serve(handler http.Handler) string {
 }
 
 func (this *HandlerChainFixture) TestHandlersAreChainedTogetherInTheCorrectOrder() {
-	handler := chainN([]nestingHandler{
+	handler := chainN([]NestingHandler{
 		NewFakeHandler("1. sanitize "),
 		NewFakeHandler("2. authentication "),
 		NewFakeHandler("3. application "),
