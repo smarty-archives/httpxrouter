@@ -59,6 +59,21 @@ func (this *RoutesBuilderFixture) TestAllMethodsOnASingleRoute() {
 	this.So(this.Serve("OPTIONS", "/hi"), should.Equal, "OPTIONS")
 }
 
+func (this *RoutesBuilderFixture) TestCompound() {
+	this.handler = New(
+		Compound(
+			GET("/hi|/bye", NewFakeHandler("GET")),
+			PUT("/hi|/bye", NewFakeHandler("PUT")),
+		),
+	)
+
+	this.So(this.Serve("PUT", "/hi"), should.Equal, "PUT")
+	this.So(this.Serve("GET", "/hi"), should.Equal, "GET")
+
+	this.So(this.Serve("PUT", "/bye"), should.Equal, "PUT")
+	this.So(this.Serve("GET", "/bye"), should.Equal, "GET")
+}
+
 func (this *RoutesBuilderFixture) TestAllMethodsOnAMultipleRoutes() {
 	this.handler = New(
 		GET("/hi|/bye", NewFakeHandler("GET")),

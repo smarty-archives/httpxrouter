@@ -15,15 +15,19 @@ func New(options ...Option) http.Handler {
 		HandleMethodNotAllowed: true,
 		HandleOPTIONS:          true,
 	}
-	for _, option := range options {
-		option(builder)
-	}
+	builder.apply(options)
 	return builder.build()
 }
 
 type routesBuilder struct {
 	handlers []NestingHandler
 	router   *httprouter.Router
+}
+
+func (builder *routesBuilder) apply(options []Option) {
+	for _, option := range options {
+		option(builder)
+	}
 }
 
 func (this *routesBuilder) build() http.Handler {

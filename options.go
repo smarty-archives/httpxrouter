@@ -65,3 +65,9 @@ func Register(methods, paths string, handlers ...NestingHandler) Option {
 		}
 	}
 }
+
+func Compound(options ...Option) Option {
+	return func(builder *routesBuilder) {
+		builder.apply(options)
+	}
+}
