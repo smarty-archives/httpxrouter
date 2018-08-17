@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/julienschmidt/httprouter"
 	"github.com/smartystreets/assertions/should"
 	"github.com/smartystreets/gunit"
 )
@@ -161,6 +162,21 @@ func (this *RoutesBuilderFixture) Test405MethodNotAllowedCallsRegisteredHandler(
 	this.So(this.response.Code, should.Equal, http.StatusNotFound)
 }
 
+func (this *RoutesBuilderFixture) TestURLParamsSavedInRequestContext() {
+	handler := NewFakeHandler("GET")
+	this.handler = New(GET("/hi/:id/there", handler))
+
+	this.Serve("GET", "/hi/smarty/there")
+	this.So(stringID(handler.request), should.Equal, "smarty")
+}
+
+func stringID(request *http.Request) string {
+	context := request.Context()
+	opaque := context.Value(httprouter.ParamsKey)
+	params, _ := opaque.(httprouter.Params)
+	return params.ByName("id")
+}
+
 func (this *RoutesBuilderFixture) TestPanicHandler() {
 	handler := &HandlerThatPanics{expected: errors.New("expected panic")}
 	this.handler = New(
@@ -225,6 +241,7 @@ func (this *HandlerChainFixture) TestHandlersAreChainedTogetherInTheCorrectOrder
 type FakeHandler struct {
 	id    string
 	inner http.Handler
+	request *http.Request
 }
 
 func NewFakeHandler(id string) *FakeHandler {
@@ -232,6 +249,7 @@ func NewFakeHandler(id string) *FakeHandler {
 }
 
 func (this *FakeHandler) ServeHTTP(response http.ResponseWriter, request *http.Request) {
+	this.request = request
 	fmt.Fprint(response, this.id)
 	if this.inner != nil {
 		this.inner.ServeHTTP(response, request)

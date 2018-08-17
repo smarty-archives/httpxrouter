@@ -34,12 +34,6 @@ func (this *routesBuilder) build() http.Handler {
 	return chainN(append(this.handlers, middleware.NewNestableHandler(this.router)))
 }
 
-func routeFunc(handler http.Handler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
-	return func(response http.ResponseWriter, request *http.Request, _ httprouter.Params) {
-		handler.ServeHTTP(response, request)
-	}
-}
-
 func chainN(handlers []NestingHandler) NestingHandler {
 	for x := 0; x < len(handlers)-1; x++ {
 		handlers[x].Install(handlers[x+1])

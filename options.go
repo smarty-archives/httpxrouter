@@ -57,10 +57,10 @@ func DELETE(path string, handlers ...NestingHandler) Option {
 
 func Register(methods, paths string, handlers ...NestingHandler) Option {
 	return func(builder *routesBuilder) {
-		handler := routeFunc(chainN(handlers))
+		handler := chainN(handlers)
 		for _, method := range strings.Split(methods, "|") {
 			for _, path := range strings.Split(paths, "|") {
-				builder.router.Handle(method, path, handler)
+				builder.router.Handler(method, path, handler)
 			}
 		}
 	}
