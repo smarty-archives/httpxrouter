@@ -6,4 +6,3 @@ type NestingHandler interface {
 	http.Handler
 	Install(inner http.Handler)
 }
-

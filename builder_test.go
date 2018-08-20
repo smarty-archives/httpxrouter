@@ -239,8 +239,8 @@ func (this *HandlerChainFixture) TestHandlersAreChainedTogetherInTheCorrectOrder
 //////////////////////////////////////////////////////////////////////////
 
 type FakeHandler struct {
-	id    string
-	inner http.Handler
+	id      string
+	inner   http.Handler
 	request *http.Request
 }
 
