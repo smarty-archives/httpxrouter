@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/smartystreets/httpxrouter.svg?branch=master)](https://travis-ci.org/smartystreets/httpxrouter)
+
 # httpxrouter
 --
     import "github.com/smartystreets/httpxrouter"
